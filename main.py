@@ -24,7 +24,7 @@ class Window(arcade.Window):
         # So we just see our object, not the pointer.
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(open_color.black)
+        arcade.set_background_color(open_color.white)
 
 
 
