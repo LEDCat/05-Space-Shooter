@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-SCREEN_TITLE = ""
+SCREEN_TITLE = "Untitled Shooter Game"
 
 
 class Window(arcade.Window):
