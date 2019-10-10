@@ -102,8 +102,8 @@ class Window(arcade.Window):
         for i in range(NUM_ENEMIES):
             x = 120 * (i+1) + 40
             y = 500
-            enemy = Animate((x,y))
-            self.enemy_list.append(Animate)
+            wolf = Animate((x,y))
+            self.enemy_list.append(wolf)
 
     def update(self, delta_time):
         self.animal_list.update()
@@ -126,6 +126,7 @@ class Window(arcade.Window):
     def on_draw(self):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
+        self.bullet_list.draw()
         self.animal_list.draw()
         self.run_list.draw()
         self.player.draw()
