@@ -68,6 +68,16 @@ class Player(arcade.Sprite):
         super().__init__("assets/ForestRanger.png", 0.5)
         (self.center_x, self.center_y) = STARTING_LOCATION
 
+class Enemy(arcade.Sprite):
+    def __init__(self, position):
+        '''
+        initializes a penguin enemy
+        Parameter: position: (x,y) tuple
+        '''
+        super().__init__("assets/Wolf/Wolf_Run_2.png", 0.5)
+        self.hp = ENEMY_HP
+        (self.center_x, self.center_y) = position
+
 class Window(arcade.Window):
 
     def __init__(self, width, height, title):
@@ -81,7 +91,7 @@ class Window(arcade.Window):
 
         arcade.set_background_color(open_color.white)
 
-        self.animal_list = arcade.SpriteList()
+        self.enemy_list = arcade.SpriteList()
         self.run_list = arcade.SpriteList()
         #
         self.set_mouse_visible(True)
@@ -91,23 +101,23 @@ class Window(arcade.Window):
         self.bullet_list = arcade.SpriteList()
         self.score = 0
 
-
     def setup(self): 
         self.run_sprite = Animate()
         self.run_sprite.center_x = 320
         self.run_sprite.center_y = 360
         self.run_list.append(self.run_sprite)
-        
-    def setup2(self):
+
+    def setup(self):
         for i in range(NUM_ENEMIES):
             x = 120 * (i+1) + 40
             y = 500
-            wolf = Animate((x,y))
+            wolf = Enemy((x,y))
             self.enemy_list.append(wolf)
 
     def update(self, delta_time):
-        self.animal_list.update()
-        self.run_sprite.update()
+        self.enemy_list.update()
+        self.run_list.update()
+        self.enemy_list.update()
 
         self.bullet_list.update()
         for e in self.enemy_list:
@@ -127,7 +137,7 @@ class Window(arcade.Window):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
         self.bullet_list.draw()
-        self.animal_list.draw()
+        self.enemy_list.draw()
         self.run_list.draw()
         self.player.draw()
 
