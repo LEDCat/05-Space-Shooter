@@ -15,9 +15,22 @@ SCREEN_TITLE = "Untitled Wolf Game"
 #GAME DEFINE
 STARTING_LOCATION = (400,100)
 
+class Animate(arcade.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.frequency = 1 #update every second        
+        self.timer = time.time()
+        running = ['Wolf_Run_1','Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
+        self.runRange = len(running)-1
+        for e in running:
+            texture = arcade.load_texture("assets/emote/Wolf_Run_{0}.png".format(e), scale=1)
+            self.textures.append(texture)
+        whichTexture = random.randint(0,self.runRange)
+        self.set_texture(whichTexture)
+
 class Player(arcade.Sprite):
     def __init__(self):
-        super().__init__("assets/Wild Animals/Wolf/Wolf_Run.png", 0.5)
+        super().__init__("assets/Wolf/Wolf_Run_1.png", 0.5)
         (self.center_x, self.center_y) = STARTING_LOCATION
 
 
@@ -38,7 +51,7 @@ class Window(arcade.Window):
 
         #
         self.set_mouse_visible(True)
-        arcade.set_background_color(open_color.blue_4)
+        arcade.set_background_color(open_color.green_4)
         self.player = Player()
         self.score = 0
 
@@ -56,7 +69,7 @@ class Window(arcade.Window):
     def on_draw(self):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
-
+        self.animal_list.draw()
 
 
 
