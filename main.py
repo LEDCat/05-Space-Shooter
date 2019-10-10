@@ -13,7 +13,12 @@ SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Untitled Hunter Game"
 
 #GAME DEFINE
+NUM_ENEMIES = 5
 STARTING_LOCATION = (400,100)
+BULLET_DAMAGE = 10
+ENEMY_HP = 100
+HIT_SCORE = 10
+KILL_SCORE = 100
 
 class Animate(arcade.Sprite):
     def __init__(self):
@@ -28,6 +33,7 @@ class Animate(arcade.Sprite):
         whichTexture = random.randint(0,self.runRange)
         self.set_texture(whichTexture)
 
+
     def update(self):
         now = time.time()
         #update once per minute
@@ -35,6 +41,7 @@ class Animate(arcade.Sprite):
             self.timer = time.time()
             whichTexture = random.randint(0,self.runRange)
             self.set_texture(whichTexture)
+        
 
 class Bullet(arcade.Sprite):
     def __init__(self, position, velocity, damage):
@@ -49,11 +56,17 @@ class Bullet(arcade.Sprite):
         (self.dx, self.dy) = velocity
         self.damage = damage
 
+    def update(self):
+        '''
+        Moves the bullet
+        '''
+        self.center_x += self.dx
+        self.center_y += self.dy
+
 class Player(arcade.Sprite):
     def __init__(self):
         super().__init__("assets/ForestRanger.png", 0.5)
         (self.center_x, self.center_y) = STARTING_LOCATION
-
 
 class Window(arcade.Window):
 
@@ -74,6 +87,8 @@ class Window(arcade.Window):
         self.set_mouse_visible(True)
         arcade.set_background_color(open_color.green_4)
         self.player = Player()
+        self.enemy_list = arcade.SpriteList()
+        self.bullet_list = arcade.SpriteList()
         self.score = 0
 
 
@@ -83,10 +98,30 @@ class Window(arcade.Window):
         self.run_sprite.center_y = 360
         self.run_list.append(self.run_sprite)
         
+    def setup2(self):
+        for i in range(NUM_ENEMIES):
+            x = 120 * (i+1) + 40
+            y = 500
+            enemy = Animate((x,y))
+            self.enemy_list.append(Animate)
 
     def update(self, delta_time):
         self.animal_list.update()
         self.run_sprite.update()
+
+        self.bullet_list.update()
+        for e in self.enemy_list:
+            damage = arcade.check_for_collision_with_list(e, self.bullet_list)
+            for d in damage:
+                e.hp = e.hp - d.damage
+                d.kill()
+                if e.hp < 0:
+                    e.kill()
+                    self.score = self.score + KILL_SCORE
+                else:
+                    self.score = self.score + HIT_SCORE
+            pass
+
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
@@ -99,12 +134,18 @@ class Window(arcade.Window):
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Called to update our objects. Happens approximately 60 times per second."""
+        self.player.center_x = x
         pass
 
     def on_mouse_press(self, x, y, button, modifiers):
         """
         Called when the user presses a mouse button.
         """
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            x = self.player.center_x
+            y = self.player.center_y + 15
+            bullet = Bullet((x,y),(0,10),BULLET_DAMAGE)
+            self.bullet_list.append(bullet)
         pass
 
     def on_mouse_release(self, x, y, button, modifiers):
