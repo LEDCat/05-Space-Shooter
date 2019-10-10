@@ -79,6 +79,7 @@ class Window(arcade.Window):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
         self.animal_list.draw()
+        self.player.draw()
 
 
 
