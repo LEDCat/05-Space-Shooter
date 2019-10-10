@@ -61,10 +61,19 @@ class Window(arcade.Window):
         self.animal_sprite.center_x = 400
         self.animal_sprite.center_y = 300
         self.animal_list.append(self.animal_sprite)
-        pass 
+        #pass 
+
+        now = time.time()
+        #update once per minute
+        if (now - self.timer) >= self.frequency:
+            self.timer = time.time()
+            whichTexture = random.randint(0,self.emoteRange)
+            self.set_texture(whichTexture)
+        #pass
 
     def update(self, delta_time):
-        pass
+        self.animal_list.update()
+        
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
