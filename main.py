@@ -18,15 +18,23 @@ STARTING_LOCATION = (400,100)
 class Animate(arcade.Sprite):
     def __init__(self):
         super().__init__()
-        self.frequency = 1 #update every second        
+        self.frequency = 0.5 #update every second        
         self.timer = time.time()
-        running = ['Wolf_Run_1','Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
+        running = ['Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
         self.runRange = len(running)-1
         for e in running:
-            texture = arcade.load_texture("assets/emote/Wolf_Run_{0}.png".format(e), scale=1)
+            texture = arcade.load_texture("assets/Wolf/{0}.png".format(e), scale=1)
             self.textures.append(texture)
         whichTexture = random.randint(0,self.runRange)
         self.set_texture(whichTexture)
+
+    def update(self):
+        now = time.time()
+        #update once per minute
+        if (now - self.timer) >= self.frequency:
+            self.timer = time.time()
+            whichTexture = random.randint(0,self.runRange)
+            self.set_texture(whichTexture)
 
 class Player(arcade.Sprite):
     def __init__(self):
@@ -48,7 +56,7 @@ class Window(arcade.Window):
         arcade.set_background_color(open_color.white)
 
         self.animal_list = arcade.SpriteList()
-
+        self.run_list = arcade.SpriteList()
         #
         self.set_mouse_visible(True)
         arcade.set_background_color(open_color.green_4)
@@ -56,29 +64,22 @@ class Window(arcade.Window):
         self.score = 0
 
 
-    def setup(self):
-        self.animal_sprite = arcade.Sprite("assets/Wild Animals/Wolf/Wolf_Run.png", 0.5)
-        self.animal_sprite.center_x = 400
-        self.animal_sprite.center_y = 300
-        self.animal_list.append(self.animal_sprite)
-        #pass 
-
-        now = time.time()
-        #update once per minute
-        if (now - self.timer) >= self.frequency:
-            self.timer = time.time()
-            whichTexture = random.randint(0,self.emoteRange)
-            self.set_texture(whichTexture)
-        #pass
+    def setup(self): 
+        self.run_sprite = Animate()
+        self.run_sprite.center_x = 320
+        self.run_sprite.center_y = 360
+        self.run_list.append(self.run_sprite)
+        
 
     def update(self, delta_time):
         self.animal_list.update()
-        
+        self.run_sprite.update()
 
     def on_draw(self):
         """ Called whenever we need to draw the window. """
         arcade.start_render()
         self.animal_list.draw()
+        self.run_list.draw()
         self.player.draw()
 
 
@@ -114,9 +115,9 @@ class Window(arcade.Window):
         """ Called whenever a user releases a key. """
         pass
 
-
 def main():
     window = Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window.setup()
     arcade.run()
 
 
