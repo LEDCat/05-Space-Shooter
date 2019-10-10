@@ -53,7 +53,7 @@ class Enemy(arcade.Sprite):
         Parameter: position: (x,y) tuple
         '''
         super().__init__()
-        self.frequency = 0.5 #update every second        
+        self.frequency = 0.2 #update under a second        
         self.timer = time.time()
         running = ['Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
         self.runRange = len(running)-1
