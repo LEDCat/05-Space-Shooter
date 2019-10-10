@@ -12,6 +12,14 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Untitled Wolf Game"
 
+#GAME DEFINE
+STARTING_LOCATION = (400,100)
+
+class Player(arcade.Sprite):
+    def __init__(self):
+        super().__init__("assets/Wild Animals/Wolf/Wolf_Run.png", 0.5)
+        (self.center_x, self.center_y) = STARTING_LOCATION
+
 
 class Window(arcade.Window):
 
@@ -26,9 +34,20 @@ class Window(arcade.Window):
 
         arcade.set_background_color(open_color.white)
 
+        self.animal_list = arcade.SpriteList()
+
+        #
+        self.set_mouse_visible(True)
+        arcade.set_background_color(open_color.blue_4)
+        self.player = Player()
+        self.score = 0
 
 
     def setup(self):
+        self.animal_sprite = arcade.Sprite("assets/Wild Animals/Wolf/Wolf_Run.png", 0.5)
+        self.animal_sprite.center_x = 400
+        self.animal_sprite.center_y = 300
+        self.animal_list.append(self.animal_sprite)
         pass 
 
     def update(self, delta_time):
