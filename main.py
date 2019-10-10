@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Untitled Wolf Game"
+SCREEN_TITLE = "Untitled Hunter Game"
 
 #GAME DEFINE
 STARTING_LOCATION = (400,100)
@@ -36,9 +36,22 @@ class Animate(arcade.Sprite):
             whichTexture = random.randint(0,self.runRange)
             self.set_texture(whichTexture)
 
+class Bullet(arcade.Sprite):
+    def __init__(self, position, velocity, damage):
+        ''' 
+        initializes the bullet
+        Parameters: position: (x,y) tuple
+            velocity: (dx, dy) tuple
+            damage: int (or float)
+        '''
+        super().__init__("assets/Arrow.png", 0.5)
+        (self.center_x, self.center_y) = position
+        (self.dx, self.dy) = velocity
+        self.damage = damage
+
 class Player(arcade.Sprite):
     def __init__(self):
-        super().__init__("assets/Wolf/Wolf_Run_1.png", 0.5)
+        super().__init__("assets/ForestRanger.png", 0.5)
         (self.center_x, self.center_y) = STARTING_LOCATION
 
 
