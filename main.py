@@ -20,28 +20,6 @@ ENEMY_HP = 100
 HIT_SCORE = 10
 KILL_SCORE = 100
 
-class Animate(arcade.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.frequency = 0.5 #update every second        
-        self.timer = time.time()
-        running = ['Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
-        self.runRange = len(running)-1
-        for e in running:
-            texture = arcade.load_texture("assets/Wolf/{0}.png".format(e), scale=1)
-            self.textures.append(texture)
-        whichTexture = random.randint(0,self.runRange)
-        self.set_texture(whichTexture)
-
-
-    def update(self):
-        now = time.time()
-        #update once per minute
-        if (now - self.timer) >= self.frequency:
-            self.timer = time.time()
-            whichTexture = random.randint(0,self.runRange)
-            self.set_texture(whichTexture)
-        
 
 class Bullet(arcade.Sprite):
     def __init__(self, position, velocity, damage):
@@ -71,12 +49,30 @@ class Player(arcade.Sprite):
 class Enemy(arcade.Sprite):
     def __init__(self, position):
         '''
-        initializes a penguin enemy
+        initializes a enemy
         Parameter: position: (x,y) tuple
         '''
-        super().__init__("assets/Wolf/Wolf_Run_2.png", 0.5)
+        super().__init__()
+        self.frequency = 0.5 #update every second        
+        self.timer = time.time()
+        running = ['Wolf_Run_2','Wolf_Run_3','Wolf_Run_4','Wolf_Run_5','Wolf_Run_6']
+        self.runRange = len(running)-1
+        for e in running:
+            texture = arcade.load_texture("assets/Wolf/{0}.png".format(e), scale=1)
+            self.textures.append(texture)
+        whichTexture = random.randint(0,self.runRange)
+        self.set_texture(whichTexture)
+
         self.hp = ENEMY_HP
         (self.center_x, self.center_y) = position
+    
+    def update(self):
+        now = time.time()
+        #update once per minute
+        if (now - self.timer) >= self.frequency:
+            self.timer = time.time()
+            whichTexture = random.randint(0,self.runRange)
+            self.set_texture(whichTexture)
 
 class Window(arcade.Window):
 
